@@ -1,6 +1,6 @@
 export default interface IItemData{
     name: string,
-    grams: number,
+    qty: number,
     calories: number,
     proteins: number,
     carbs: number,

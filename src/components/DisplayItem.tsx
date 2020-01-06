@@ -11,7 +11,7 @@ export default class DisplayItem extends React.Component<DisplayItemProps, {}>{
         return (
             <>
                 <td>{this.props.itemData.name}</td>
-                <td>{this.props.itemData.grams}</td>
+                <td>{this.props.itemData.qty}</td>
                 <td>{this.props.itemData.calories}</td>
                 <td>{this.props.itemData.proteins}</td>
                 <td>{this.props.itemData.carbs}</td>
