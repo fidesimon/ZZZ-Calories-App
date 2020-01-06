@@ -1,5 +1,7 @@
 import * as React from 'react';
 import IItemData from './IItemData';
+import { Summary } from './Summary';
+import AddItem from './AddItem';
 
 interface CaloriesAppProps {
 
@@ -26,6 +28,8 @@ export default class CaloriesApp extends React.Component<CaloriesAppProps, Calor
     render() {
         return (
             <>
+                <Summary calories={this.state.sumCalories} proteins={this.state.sumProteins} carbs={this.state.sumCarbs} fat={this.state.sumFat} />
+                <AddItem />
             </>
         );
     }
