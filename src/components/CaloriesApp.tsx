@@ -1,7 +1,8 @@
 import * as React from 'react';
 import IItemData from './IItemData';
 import { Summary } from './Summary';
-import AddItem from './AddItem';
+import { AddItem } from './AddItem';
+import DisplayList from './DisplayList';
 
 interface CaloriesAppProps {
 
@@ -12,6 +13,7 @@ interface CaloriesAppState {
     sumProteins: number;
     sumCarbs: number;
     sumFat: number;
+    items: IItemData[];
 }
 
 export default class CaloriesApp extends React.Component<CaloriesAppProps, CaloriesAppState>{
@@ -21,12 +23,42 @@ export default class CaloriesApp extends React.Component<CaloriesAppProps, Calor
             sumCalories: 0,
             sumProteins: 0,
             sumCarbs: 0,
-            sumFat: 0
+            sumFat: 0,
+            items: []
         }
     }
 
-    addItemHandler = (itemName: string) => {
+    addItemHandler = (itemName: string, itemQty: number) => {
+        let item = calorieData.find(n => n.name === itemName);//.filter(n=>n.name === itemName);
+        if (item !== undefined) {
+            let addItem: IItemData = this.convertValues(item, itemQty);
+            let items = this.state.items;
+            items.push(addItem);
+            this.setState({items: items});
+            this.refreshSums();
+        } else {
+            alert(`item ${itemName} not found.`);
+        }
+    }
 
+    deleteItemHandler = (id: number) => {
+        let items = this.state.items;
+        items.splice(id, 1);
+        this.setState({items: items});
+        this.refreshSums();
+    }
+
+    refreshSums = () => {
+        let calories = this.state.items.reduce((a,b) => +a + +b.calories, 0);
+        let proteins = this.state.items.reduce((a,b) => +a + +b.proteins, 0);
+        let carbs = this.state.items.reduce((a,b) => +a + +b.carbs, 0);
+        let fat = this.state.items.reduce((a,b) => +a + +b.fat, 0);
+        this.setState({
+            sumCalories: +(calories).toFixed(2),
+            sumProteins: +(proteins).toFixed(2),
+            sumCarbs: +(carbs).toFixed(2),
+            sumFat: +(fat).toFixed(2)
+        })
     }
 
     render() {
@@ -34,8 +66,21 @@ export default class CaloriesApp extends React.Component<CaloriesAppProps, Calor
             <>
                 <Summary calories={this.state.sumCalories} proteins={this.state.sumProteins} carbs={this.state.sumCarbs} fat={this.state.sumFat} />
                 <AddItem addHandler={this.addItemHandler} />
+                <DisplayList items={this.state.items} deleteHandler={this.deleteItemHandler} />
             </>
         );
+    }
+
+    convertValues = (item: IItemData, qty: number): IItemData => {
+        let coeff = qty / (item.qty);
+        return {
+            ...item,
+            qty: qty,
+            calories: +(item.calories * coeff).toFixed(2),
+            proteins: +(item.proteins * coeff).toFixed(2),
+            carbs: +(item.carbs * coeff).toFixed(2),
+            fat: +(item.fat * coeff).toFixed(2)
+        }
     }
 }
 

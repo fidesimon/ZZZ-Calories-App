@@ -4,6 +4,7 @@ import DisplayItem from './DisplayItem';
 
 interface DisplayListProps {
     items: IItemData[];
+    deleteHandler: Function;
 }
 
 export default class DisplayList extends React.Component<DisplayListProps, {}>{
@@ -18,11 +19,10 @@ export default class DisplayList extends React.Component<DisplayListProps, {}>{
                     <th>Protein</th>
                     <th>Carbs</th>
                     <th>Fat</th>
+                    <th>Remove</th>
                 </thead>
-                {this.props.items.map((item) => {
-                    <tr>
-                        <DisplayItem itemData={item} />
-                    </tr>
+                {this.props.items.map((item, index) => {
+                        return <DisplayItem deleteHandler={this.props.deleteHandler} id={index} itemData={item} />
                 })}
             </table>
         );
