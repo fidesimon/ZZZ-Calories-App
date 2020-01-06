@@ -1,7 +1,7 @@
 import * as React from 'react'
 
 interface AddItemProps {
-
+    addHandler: Function;
 }
 
 interface AddItemState{

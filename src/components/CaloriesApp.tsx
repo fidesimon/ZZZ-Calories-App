@@ -25,11 +25,15 @@ export default class CaloriesApp extends React.Component<CaloriesAppProps, Calor
         }
     }
 
+    addItemHandler = (itemName: string) => {
+
+    }
+
     render() {
         return (
             <>
                 <Summary calories={this.state.sumCalories} proteins={this.state.sumProteins} carbs={this.state.sumCarbs} fat={this.state.sumFat} />
-                <AddItem />
+                <AddItem addHandler={this.addItemHandler} />
             </>
         );
     }
