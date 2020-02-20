@@ -1,5 +1,4 @@
 import * as React from 'react';
-import IItemData from './IItemData';
 import { Summary } from './Summary';
 import { AddItem } from './AddItem';
 import DisplayList from './DisplayList';
