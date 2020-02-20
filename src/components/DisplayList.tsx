@@ -1,9 +1,9 @@
 import * as React from 'react';
-import IItemData from './IItemData';
+import {Product} from './CaloriesApp';
 import DisplayItem from './DisplayItem';
 
 interface DisplayListProps {
-    items: IItemData[];
+    items: Product[];
     deleteHandler: Function;
 }
 
