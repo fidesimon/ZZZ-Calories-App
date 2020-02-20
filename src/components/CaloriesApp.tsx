@@ -50,8 +50,18 @@ export default class CaloriesApp extends React.Component<CaloriesAppProps, Calor
         });
     }
 
-    addItemHandler = (itemName: string, itemQty: number) => {
-        let item = this.state.calorieData.find(n => n.Name === itemName);//.filter(n=>n.name === itemName);
+    async getItemByName(name: string) {
+        let results = await axios.get('http://localhost:3000/product/' + name, {
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+            }
+        });
+        let data = results.data.data as Product;
+        return data;
+    }
+
+    async addItemHandler(itemName: string, itemQty: number) {
+        let item = await this.getItemByName(itemName);
         if (item !== undefined) {
             let addItem: Product = this.convertValues(item, itemQty);
             let items = this.state.items;
@@ -87,7 +97,7 @@ export default class CaloriesApp extends React.Component<CaloriesAppProps, Calor
         return (
             <>
                 <Summary calories={this.state.sumCalories} proteins={this.state.sumProteins} carbs={this.state.sumCarbs} fat={this.state.sumFat} />
-                <AddItem addHandler={this.addItemHandler} />
+                <AddItem addHandler={this.addItemHandler.bind(this)} />
                 <DisplayList items={this.state.items} deleteHandler={this.deleteItemHandler} />
             </>
         );
