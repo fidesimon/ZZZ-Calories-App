@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { Product } from './CaloriesApp';
+import TableCell from '@material-ui/core/TableCell';
+import TableRow from '@material-ui/core/TableRow';
 
 interface DisplayItemProps {
     itemData: Product;
@@ -11,17 +13,19 @@ export default class DisplayItem extends React.Component<DisplayItemProps, {}>{
 
     render() {
         return (
-            <tr>
-                <td>{this.props.itemData.Name}</td>
-                <td>{this.props.itemData.Quantity}</td>
-                <td>{this.props.itemData.Calorie}</td>
-                <td>{this.props.itemData.Protein}</td>
-                <td>{this.props.itemData.Carbohydrate}</td>
-                <td>{this.props.itemData.Fat}</td>
-                <td onClick={()=>{
+            <TableRow key="sum">
+                <TableCell>{this.props.itemData.Name}</TableCell>
+                <TableCell>{this.props.itemData.Quantity}</TableCell>
+                <TableCell>{this.props.itemData.Calorie}}</TableCell>
+                <TableCell>{this.props.itemData.Protein}</TableCell>
+                <TableCell>{this.props.itemData.Carbohydrate}</TableCell>
+                <TableCell>{this.props.itemData.Fat}</TableCell>
+                <TableCell onClick={() => {
                     this.props.deleteHandler(this.props.id);
-                }}>(delete)</td>
-            </tr>
+                }}>(delete)</TableCell>
+            </TableRow>
         )
     }
 }
+/*
+*/
