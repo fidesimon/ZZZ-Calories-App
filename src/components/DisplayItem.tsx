@@ -16,7 +16,7 @@ export default class DisplayItem extends React.Component<DisplayItemProps, {}>{
             <TableRow key="sum">
                 <TableCell>{this.props.itemData.Name}</TableCell>
                 <TableCell>{this.props.itemData.Quantity}</TableCell>
-                <TableCell>{this.props.itemData.Calorie}}</TableCell>
+                <TableCell>{this.props.itemData.Calorie}</TableCell>
                 <TableCell>{this.props.itemData.Protein}</TableCell>
                 <TableCell>{this.props.itemData.Carbohydrate}</TableCell>
                 <TableCell>{this.props.itemData.Fat}</TableCell>

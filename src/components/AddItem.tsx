@@ -1,77 +1,73 @@
 import * as React from 'react';
-import axios from 'axios';
 import { Product } from './CaloriesApp';
+import TextField from '@material-ui/core/TextField';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import Paper from '@material-ui/core/Paper';
+import Button from '@material-ui/core/Button';
+import { makeStyles } from '@material-ui/core/styles';
 
 interface AddItemProps {
     addHandler: Function;
+    items: Product[];
 }
 
-interface AddItemState {
-
-}
+const useStyles = makeStyles(theme => ({
+    margin: {
+        margin: theme.spacing(1),
+        marginLeft: 10
+    }
+}));
 
 export const AddItem: React.FC<AddItemProps> = (props) => {
+    const [selectedItem, setSelectedItem] = React.useState<number>(1);
     const [itemName, setItemName] = React.useState<string>();
     const [itemQty, setItemQty] = React.useState<number>();
-    const [currentSearchString, setCurrentSearchString] = React.useState<string>();
-    const [allAutoCompleteItems, setAllAutoCompleteItems] = React.useState<Product[]>([]);
-    const [autoCompleteItems, setAutoCompleteItems] = React.useState<Product[]>([]);
-
-    function getItems(firstLetters: string) {
-        //debugger;
-        let firstLetter = firstLetters.substring(0, 1);
-        if (currentSearchString !== firstLetter) {
-            setCurrentSearchString(firstLetter);
-            axios.get('http://localhost:3000/filteredProducts/' + firstLetter, {
-                headers: {
-                    'Access-Control-Allow-Origin': '*',
-                }
-            }).then(res => {
-                console.log(res);
-                let data = res.data.data as Product[];
-                setAllAutoCompleteItems(data);
-                let filteredItems = data.filter(function (product) {
-                    return product.Name.toLowerCase().startsWith(firstLetters.toLowerCase());
-                });
-        
-                setAutoCompleteItems(filteredItems);
-            });
-        } else {
-            let filteredItems = allAutoCompleteItems.filter(function (product) {
-                return product.Name.toLowerCase().startsWith(firstLetters.toLowerCase());
-            });
-    
-            setAutoCompleteItems(filteredItems);
-        }
-    }
+    const classes = useStyles();
 
     return (
-        <>
-            Name: <input onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
-                if (evt.currentTarget.value.length >= 1) {
-                    getItems(evt.currentTarget.value);
-                } else {
-                    setAllAutoCompleteItems([]);
-                    setAutoCompleteItems([]);
+        <Paper>
+            <Autocomplete
+                
+                clearOnEscape
+                key={"autoComplete" + selectedItem}
+                options={props.items}
+                getOptionLabel={option => option.Name}
+                style={{ width: 300, marginLeft: 10 }}
+                renderInput={params =>
+                    <TextField {...params} label="Select Item"
+                        margin="normal"
+                        variant="outlined"
+                        onBlur={(evt: any) => {
+                            setItemName(evt.target.value);
+                        }}
+                    />
                 }
-                setItemName(evt.currentTarget.value)
-            }} />
-            <br />
-            Q-ty <input value={itemQty} type="number" onChange={(evt: React.ChangeEvent<HTMLInputElement>) => setItemQty(evt.currentTarget.valueAsNumber)} />
-            <br />
-            <button onClick={() => {
+            />
+            <TextField
+                id="standard-number"
+                label="Quantity"
+                type="number"
+                style={{ width: 300, marginLeft: 10 }}
+                value={itemQty}
+                onChange={
+                    (evt: React.ChangeEvent<HTMLInputElement>) => {
+                        setItemQty(evt.currentTarget.valueAsNumber);
+                    }
+                }
+                InputLabelProps={{
+                    shrink: true,
+                }}
+                variant="outlined"
+            /><br />
+            <Button variant="contained" size="large" color="primary" className={classes.margin} onClick={() => {
                 if (itemName !== null && itemQty !== null) {
                     props.addHandler(itemName, itemQty);
-                    setItemName("");
+                    setSelectedItem(selectedItem + 1);
                     setItemQty(0);
                 }
-            }}>Add</button>
-            {autoCompleteItems.map((item) => {
-                return(<>
-                    <span>{item.Name}</span>
-                    <br />
-                </>)
-            })}
-        </>
+            }}>
+                Add Item
+            </Button>
+        </Paper>
     )
 }

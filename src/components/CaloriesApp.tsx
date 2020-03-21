@@ -96,7 +96,7 @@ export default class CaloriesApp extends React.Component<CaloriesAppProps, Calor
         return (
             <>
                 <Summary calories={this.state.sumCalories} proteins={this.state.sumProteins} carbs={this.state.sumCarbs} fat={this.state.sumFat} />
-                <AddItem addHandler={this.addItemHandler.bind(this)} />
+                <AddItem addHandler={this.addItemHandler.bind(this)} items={this.state.calorieData} />
                 <DisplayList items={this.state.items} deleteHandler={this.deleteItemHandler} />
             </>
         );
